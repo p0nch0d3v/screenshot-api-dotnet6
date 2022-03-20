@@ -26,20 +26,20 @@ public static class Api
         }
     }
 
-    private static async Task<IResult> TakeScreenshot(ScreenshotDTO screenshot, IScreenshotService service)
+    private static async Task<IResult> TakeScreenshot(ScreenshotDTO screenshotRequest, IScreenshotService service)
     {
         try
         {
-            if (ValidateToken(screenshot.Token))
+            string validation = ValidateInput(screenshotRequest);
+            if (!string.IsNullOrWhiteSpace(validation))
             {
-
+                return Results.Problem(validation);
             }
-            else 
-            {
-                return Results.Problem("Not valid token");
-            }
-            
-            return Results.Ok(true);
+            var screenshot = await service.TakeScreenshot(screenshotRequest);
+            return Results.File(fileContents: screenshot, 
+                contentType: "image/jpeg", 
+                fileDownloadName: "image.jpeg"
+            );
         }
         catch (System.Exception ex)
         {
@@ -47,10 +47,30 @@ public static class Api
         }
     }
 
-    private static bool ValidateToken(string token)
+    private static string ValidateInput(ScreenshotDTO screenshotRequest)
     {
         string systemToken = Environment.GetEnvironmentVariable("TOKEN");
-        return string.Compare(token, systemToken, false) == 0;
+
+        if (!string.IsNullOrWhiteSpace(screenshotRequest.Token) && !string.IsNullOrWhiteSpace(systemToken) && string.Compare(screenshotRequest.Token, systemToken, false) != 0) {
+            return "Invalid Token";
+        }
+
+        if (string.IsNullOrWhiteSpace(screenshotRequest.Url))
+        {
+            return "Invalid URL";
+        }
+
+        if (screenshotRequest.Width.HasValue && screenshotRequest.Width <= 0) 
+        {
+            return "Invalid Width";
+        }
+
+        if (screenshotRequest.Height.HasValue && screenshotRequest.Height <= 0) 
+        {
+            return "Invalid Height";
+        }
+
+        return null;
     }
 
 }

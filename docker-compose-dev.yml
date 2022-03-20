@@ -4,10 +4,13 @@ services:
   app:
     image: mcr.microsoft.com/dotnet/sdk:6.0
     command: >
-      sh -c "cd /app/screenshot-api && 
-            dotnet dev-certs https --trust && 
-            dotnet restore &&
-            dotnet run"
+      sh -c "apt update --yes &&
+             apt upgrade --yes &&
+             apt install chromium --quiet --yes &&
+             cd /app/screenshot-api && 
+             dotnet dev-certs https --trust && 
+             dotnet restore &&
+             dotnet run"
     volumes:
       - './:/app'
     ports:
@@ -18,3 +21,4 @@ services:
       'ASPNETCORE_URLS': 'http://+:4000;https://+:4001'
       'ASPNETCORE_ENVIRONMENT': 'Development'
       'TOKEN': ${TOKEN}
+      'PUPPETEER_SKIP_CHROMIUM_DOWNLOAD': 'true'
