@@ -18,7 +18,6 @@ public static class Api
         try
         {
             return Results.NotFound();
-            // return Results.Ok(true);
         }
         catch (System.Exception ex)
         {
@@ -51,7 +50,10 @@ public static class Api
     {
         string systemToken = Environment.GetEnvironmentVariable("TOKEN");
 
-        if (!string.IsNullOrWhiteSpace(screenshotRequest.Token) && !string.IsNullOrWhiteSpace(systemToken) && string.Compare(screenshotRequest.Token, systemToken, false) != 0) {
+        if (string.IsNullOrWhiteSpace(screenshotRequest.Token) 
+            || string.IsNullOrWhiteSpace(systemToken)
+            || string.Compare(screenshotRequest.Token, systemToken, false) != 0)
+        {
             return "Invalid Token";
         }
 

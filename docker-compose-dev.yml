@@ -4,9 +4,9 @@ services:
   app:
     image: mcr.microsoft.com/dotnet/sdk:6.0
     command: >
-      sh -c "apt update --yes &&
-             apt upgrade --yes &&
-             apt install chromium --quiet --yes &&
+      sh -c "apt-get update --yes &&
+             apt-get upgrade --yes &&
+             apt-get install chromium --quiet --yes &&
              cd /app/screenshot-api && 
              dotnet dev-certs https --trust && 
              dotnet restore &&
