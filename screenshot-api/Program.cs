@@ -1,6 +1,7 @@
 using Microsoft.OpenApi.Models;
 using screenshot_api;
 
+IScreenshotService screenshotService = new ScreenshotService();
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -28,4 +29,8 @@ app.UseHttpsRedirection();
 
 app.ConfigureAPI();
 
+// Warming up
+await screenshotService.TakeScreenshot(new ScreenshotDTO(){ Url = Environment.GetEnvironmentVariable("WARMINUP_URL") });
+
 app.Run();
+

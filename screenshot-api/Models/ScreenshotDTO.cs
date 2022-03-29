@@ -12,3 +12,4 @@ public class ScreenshotDTO
     public uint? Height { get; set; }
     public uint? WaitTime { get; set; }
 }
+

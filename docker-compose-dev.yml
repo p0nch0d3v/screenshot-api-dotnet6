@@ -22,3 +22,5 @@ services:
       'ASPNETCORE_ENVIRONMENT': 'Development'
       'TOKEN': ${TOKEN}
       'PUPPETEER_SKIP_CHROMIUM_DOWNLOAD': 'true'
+      'WARMINUP_URL': ${WARMINUP_URL}
+

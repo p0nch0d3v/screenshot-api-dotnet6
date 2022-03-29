@@ -7,6 +7,7 @@ public class ScreenshotService : IScreenshotService
 {
     public async Task<byte[]> TakeScreenshot(ScreenshotDTO screenshotRequest)
     {
+        System.Console.WriteLine("Take Screenshot, Url: " + screenshotRequest.Url);
         byte[] result = null;
         var options = new LaunchOptions
             {
@@ -51,3 +52,4 @@ public class ScreenshotService : IScreenshotService
         return result;
     }
 }
+
