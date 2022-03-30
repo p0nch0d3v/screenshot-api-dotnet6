@@ -11,5 +11,6 @@ public class ScreenshotDTO
     public uint? Width { get; set; }
     public uint? Height { get; set; }
     public uint? WaitTime { get; set; }
+    public bool FullPage { get; set; } = false;
 }
 

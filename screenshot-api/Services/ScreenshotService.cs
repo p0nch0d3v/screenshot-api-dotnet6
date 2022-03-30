@@ -7,7 +7,8 @@ public class ScreenshotService : IScreenshotService
 {
     public async Task<byte[]> TakeScreenshot(ScreenshotDTO screenshotRequest)
     {
-        System.Console.WriteLine("Take Screenshot, Url: " + screenshotRequest.Url);
+        System.Console.WriteLine($"Taking Screenshot, Url: {screenshotRequest.Url}, Width: {screenshotRequest.Width}, Height: {screenshotRequest.Height}, WaitTime: {screenshotRequest.WaitTime}, FullPage: {screenshotRequest.FullPage}");
+        
         byte[] result = null;
         var options = new LaunchOptions
             {
@@ -38,11 +39,11 @@ public class ScreenshotService : IScreenshotService
                 
                 if (screenshotRequest.WaitTime.HasValue) 
                 {
-                    Task.Delay((int)screenshotRequest.WaitTime).Wait();
+                    Task.Delay((int)screenshotRequest.WaitTime * 1000).Wait();
                 }
                 
                 result = await page.ScreenshotDataAsync(new ScreenshotOptions() { 
-                    FullPage = true, 
+                    FullPage = screenshotRequest.FullPage, 
                     Type = ScreenshotType.Jpeg,
                     Quality = 100
                 });
