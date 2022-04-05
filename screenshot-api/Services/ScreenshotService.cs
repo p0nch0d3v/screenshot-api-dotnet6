@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using PuppeteerSharp;
 
@@ -35,6 +36,10 @@ public class ScreenshotService : IScreenshotService
         {
             using (var page = await browser.NewPageAsync())
             {
+                if (!string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("USER_AGENT")))
+                {
+                    await page.SetUserAgentAsync(Environment.GetEnvironmentVariable("USER_AGENT"));
+                }
                 await page.GoToAsync(screenshotRequest.Url);
                 
                 if (screenshotRequest.WaitTime.HasValue) 
