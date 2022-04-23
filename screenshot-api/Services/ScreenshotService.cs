@@ -22,7 +22,7 @@ public class ScreenshotService : IScreenshotService
                     "--enable-logging", 
                     "--v=1"
                 },
-                ExecutablePath = "/usr/bin/chromium",
+                ExecutablePath = Environment.GetEnvironmentVariable("CHROMIUM_EXECUTABLEPATH"),
                 DefaultViewport = new ViewPortOptions
                 {
                     Width = screenshotRequest.Width.HasValue ? (int)screenshotRequest.Width : 1920,
