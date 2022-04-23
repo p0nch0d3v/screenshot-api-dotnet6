@@ -43,3 +43,9 @@ curl --location --request POST 'https://{YOUR_API_URL}/screenshot' \
 }' >> image.jpeg
 ```
 In the previous example take the screenshot of the page: `https://www.google.com` with the resolution `1024x768`, and store it in the file `image.jpeg`
+
+Or you can use `swagger` locally: https://localhost:4001/swagger/index.html
+
+![swagger-1](./README.assets/swagger-1.png)
+
+![swagger-2](./README.assets/swagger-2.png)
