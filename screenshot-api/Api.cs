@@ -11,6 +11,7 @@ public static class Api
         // All API endpoint mapping
         app.MapGet("/", ()=> Results.NotFound() );
         app.MapPost("/screenshot", TakeScreenshot);
+        app.MapGet("/healtcheck", HealthCheck);
     }
 
     private static async Task<IResult> GetHome()
@@ -46,13 +47,18 @@ public static class Api
         }
     }
 
+    private static async Task<IResult> HealthCheck(string token)
+    {
+        if (isTokenValid(token))
+        {
+            return Results.Ok($"{DateTime.Now.ToShortDateString()} {DateTime.Now.ToShortTimeString()}");
+        }
+        return Results.Unauthorized();
+    }
+
     private static string ValidateInput(ScreenshotDTO screenshotRequest)
     {
-        string systemToken = Environment.GetEnvironmentVariable("TOKEN");
-
-        if (string.IsNullOrWhiteSpace(screenshotRequest.Token) 
-            || string.IsNullOrWhiteSpace(systemToken)
-            || string.Compare(screenshotRequest.Token, systemToken, false) != 0)
+        if (!isTokenValid(screenshotRequest.Token))
         {
             return "Invalid Token";
         }
@@ -73,6 +79,15 @@ public static class Api
         }
 
         return null;
+    }
+
+    private static bool isTokenValid(string token)
+    {
+        string systemToken = Environment.GetEnvironmentVariable("TOKEN");
+
+        return (string.IsNullOrWhiteSpace(token) 
+            || string.IsNullOrWhiteSpace(systemToken)
+            || string.Compare(token, systemToken, false) == 0);
     }
 }
 
