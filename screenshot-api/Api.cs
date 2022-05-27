@@ -12,6 +12,8 @@ public static class Api
         app.MapGet("/", ()=> Results.NotFound() );
         app.MapPost("/screenshot", TakeScreenshot);
         app.MapGet("/healtcheck", HealthCheck);
+        
+        app.MapMethods("/healtcheck", new[] { "OPTIONS", "HEAD" }, () => true);
     }
 
     private static async Task<IResult> GetHome()
