@@ -10,7 +10,7 @@ services:
              cd /app/screenshot-api && 
              dotnet dev-certs https --trust && 
              dotnet restore &&
-             dotnet run"
+             dotnet watch run"
     volumes:
       - './:/app'
     ports:
