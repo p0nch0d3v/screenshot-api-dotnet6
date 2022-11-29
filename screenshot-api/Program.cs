@@ -4,6 +4,12 @@ using screenshot_api;
 IScreenshotService screenshotService = new ScreenshotService();
 var builder = WebApplication.CreateBuilder(args);
 
+builder.WebHost.UseKestrel(options =>
+{
+    options.Limits.MaxConcurrentConnections = 100;
+    options.Limits.KeepAliveTimeout = TimeSpan.FromMinutes(5);
+});
+
 // Add services to the container.
 builder.Services.AddScoped<IScreenshotService, ScreenshotService>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -30,7 +36,19 @@ app.UseHttpsRedirection();
 app.ConfigureAPI();
 
 // Warming up
-await screenshotService.TakeScreenshot(new ScreenshotDTO(){ Url = Environment.GetEnvironmentVariable("WARMINUP_URL") });
+string warming_url = Environment.GetEnvironmentVariable("WARMINUP_URL");
+if (!string.IsNullOrWhiteSpace(warming_url)) {
+    await screenshotService.TakeScreenshot(
+        new ScreenshotDTO(){ 
+            Url = warming_url, 
+            Width = 800, 
+            Height = 600 
+        }
+    );
+}
+else {
+    System.Console.WriteLine("[LOG] - Skipping Warm Up");
+}
 
 app.Run();
 

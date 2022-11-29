@@ -8,7 +8,7 @@ public class ScreenshotService : IScreenshotService
 {
     public async Task<byte[]> TakeScreenshot(ScreenshotDTO screenshotRequest)
     {
-        System.Console.WriteLine($"Taking Screenshot, Url: {screenshotRequest.Url}, Width: {screenshotRequest.Width}, Height: {screenshotRequest.Height}, WaitTime: {screenshotRequest.WaitTime}, FullPage: {screenshotRequest.FullPage}");
+        System.Console.WriteLine($"[LOG] - Taking Screenshot, Url: {screenshotRequest.Url}, Width: {screenshotRequest.Width}, Height: {screenshotRequest.Height}, WaitTime: {screenshotRequest.WaitTime}, FullPage: {screenshotRequest.FullPage}");
         
         byte[] result = null;
         var options = new LaunchOptions
@@ -34,7 +34,7 @@ public class ScreenshotService : IScreenshotService
         
         using (var browser = await Puppeteer.LaunchAsync(options)) 
         {
-            using (var page = await browser.NewPageAsync())
+            using (Page page = await browser.NewPageAsync())
             {
                 if (!string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("USER_AGENT")))
                 {
@@ -50,11 +50,11 @@ public class ScreenshotService : IScreenshotService
                 result = await page.ScreenshotDataAsync(new ScreenshotOptions() { 
                     FullPage = screenshotRequest.FullPage, 
                     Type = ScreenshotType.Jpeg,
-                    Quality = 100
+                    Quality = 100,
                 });
             }
         }
-
+        System.Console.WriteLine("[LOG] - Taking Screenshot Done");
         return result;
     }
 }
