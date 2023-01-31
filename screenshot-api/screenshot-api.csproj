@@ -15,5 +15,9 @@
   <ItemGroup>
     <Watch Include="**\*.cs" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <Watch Remove="ConfigurationsManager.cs" />
+  </ItemGroup>
 
 </Project>
