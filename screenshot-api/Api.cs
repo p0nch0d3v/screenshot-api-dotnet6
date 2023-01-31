@@ -6,8 +6,12 @@ namespace screenshot_api;
 
 public static class Api
 {
+	private static string systemToken = null;
+
     public static void ConfigureAPI(this WebApplication app)
     {
+		systemToken = app.Configuration.Get_Token();
+
         // All API endpoint mapping
         app.MapGet("/", ()=> Results.NotFound() );
         app.MapPost("/screenshot", TakeScreenshot);
@@ -85,8 +89,6 @@ public static class Api
 
     private static bool isTokenValid(string token)
     {
-        string systemToken = Environment.GetEnvironmentVariable("TOKEN");
-
         return (string.IsNullOrWhiteSpace(token) 
             || string.IsNullOrWhiteSpace(systemToken)
             || string.Compare(token, systemToken, false) == 0);
