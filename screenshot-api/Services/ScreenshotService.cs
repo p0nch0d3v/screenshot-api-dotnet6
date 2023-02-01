@@ -36,10 +36,10 @@ public class ScreenshotService : IScreenshotService
 				Height = screenshotRequest.Height.HasValue ? (int)screenshotRequest.Height : 1080
 			}
 		};
-		using var browserFetcher = new BrowserFetcher();
+		using BrowserFetcher browserFetcher = new BrowserFetcher();
 		await browserFetcher.DownloadAsync();
 
-		using (var browser = await Puppeteer.LaunchAsync(options))
+		using (Browser browser = await Puppeteer.LaunchAsync(options))
 		{
 			using (Page page = await browser.NewPageAsync())
 			{
@@ -47,7 +47,16 @@ public class ScreenshotService : IScreenshotService
 				{
 					await page.SetUserAgentAsync(this.configuration.Get_UserAgent());
 				}
-				await page.GoToAsync(screenshotRequest.Url);
+
+				WaitUntilNavigation[] waitUntil = new[]
+				{
+					WaitUntilNavigation.Networkidle0,
+					WaitUntilNavigation.Networkidle2,
+					WaitUntilNavigation.DOMContentLoaded,
+					WaitUntilNavigation.Load
+				};
+
+				await page.GoToAsync(screenshotRequest.Url, new NavigationOptions { WaitUntil = waitUntil });
 
 				if (screenshotRequest.WaitTime.HasValue)
 				{

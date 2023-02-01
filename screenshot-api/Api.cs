@@ -41,7 +41,7 @@ public static class Api
             {
                 return Results.Problem(validation);
             }
-            var screenshot = await service.TakeScreenshot(screenshotRequest);
+            byte[] screenshot = await service.TakeScreenshot(screenshotRequest);
             return Results.File(fileContents: screenshot, 
                 contentType: "image/jpeg", 
                 fileDownloadName: "image.jpeg"
