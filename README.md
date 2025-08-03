@@ -22,9 +22,9 @@ dotnet restore
 dotnet run
 ```
 
-Or using `docker-compose`:
+Or using `docker compose`:
 ```sh
-docker-compose -f docker-compose-dev.yml up
+docker compose -f docker-compose-dev.yml up
 ```
 
 ## How to use it

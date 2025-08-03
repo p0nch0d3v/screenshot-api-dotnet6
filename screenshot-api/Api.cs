@@ -94,4 +94,3 @@ public static class Api
             || string.Compare(token, systemToken, false) == 0);
     }
 }
-
