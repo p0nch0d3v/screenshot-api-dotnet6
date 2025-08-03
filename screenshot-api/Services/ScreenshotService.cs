@@ -36,12 +36,12 @@ public class ScreenshotService : IScreenshotService
 				Height = screenshotRequest.Height.HasValue ? (int)screenshotRequest.Height : 1080
 			}
 		};
-		using BrowserFetcher browserFetcher = new BrowserFetcher();
+		BrowserFetcher browserFetcher = new BrowserFetcher();
 		await browserFetcher.DownloadAsync();
 
-		using (Browser browser = await Puppeteer.LaunchAsync(options))
+		using (IBrowser browser = await Puppeteer.LaunchAsync(options))
 		{
-			using (Page page = await browser.NewPageAsync())
+			using (IPage page = await browser.NewPageAsync())
 			{
 				if (!string.IsNullOrWhiteSpace(this.configuration.Get_UserAgent()))
 				{
@@ -71,7 +71,7 @@ public class ScreenshotService : IScreenshotService
 				});
 			}
 		}
-		System.Console.WriteLine("[LOG] - Taking Screenshot Done");
+		System.Console.WriteLine($"[LOG] - Taking Screenshot Done, {result.Length}");
 		return result;
 	}
 }
