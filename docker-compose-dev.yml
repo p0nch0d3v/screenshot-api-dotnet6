@@ -2,7 +2,8 @@ version: '3'
 
 services:
   app:
-    image: mcr.microsoft.com/dotnet/sdk:6.0
+    privileged: true
+    image: mcr.microsoft.com/dotnet/sdk:8.0
     command: >
       sh -c "apt-get update --yes --quiet > /dev/null &&
              apt-get upgrade --yes --quiet > /dev/null &&
@@ -10,9 +11,9 @@ services:
              cd /app/screenshot-api && 
              dotnet dev-certs https --trust && 
              dotnet restore &&
-             dotnet watch run"
+             dotnet run"
     volumes:
-      - './:/app'
+      - './:/app:z'
     ports:
       - 4000:4000
       - 4001:4001
@@ -25,3 +26,4 @@ services:
       'WARMINUP_URL': ${WARMINUP_URL}
       'USER_AGENT': ${USER_AGENT}
       'CHROMIUM_EXECUTABLEPATH': ${CHROMIUM_EXECUTABLEPATH}
+
