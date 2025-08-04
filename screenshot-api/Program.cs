@@ -7,6 +7,7 @@ builder.WebHost.UseKestrel(options =>
 {
 	options.Limits.MaxConcurrentConnections = 100;
 	options.Limits.KeepAliveTimeout = TimeSpan.FromMinutes(5);
+  options.Limits.RequestHeadersTimeout = TimeSpan.FromMinutes(5);
 });
 
 // Add services to the container.

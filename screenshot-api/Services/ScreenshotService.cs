@@ -61,19 +61,6 @@ public class ScreenshotService : IScreenshotService
 				{
 					Task.Delay((int)screenshotRequest.WaitTime * 1000).Wait();
 				}
-				try
-				{
-					IRequest? request = await page.WaitForRequestAsync(
-						"/",
-						new WaitForOptions() { Timeout = 0 } 
-					);
-					IRequest[] chain = request.RedirectChain;
-					System.Console.WriteLine($"[DEBUG] - {chain != null} {chain?.Length}");
-				}
-				catch(Exception ex)
-				{
-					System.Console.WriteLine($"[ERROR] - {ex?.Message} {ex?.StackTrace}");
-				}
 
 				result = await page.ScreenshotDataAsync(new ScreenshotOptions()
 				{
