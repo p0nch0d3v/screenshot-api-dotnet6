@@ -55,12 +55,24 @@ public class ScreenshotService : IScreenshotService
 					WaitUntilNavigation.DOMContentLoaded,
 					WaitUntilNavigation.Load
 				};
-
 				await page.GoToAsync(screenshotRequest.Url, new NavigationOptions { WaitUntil = waitUntil });
 
 				if (screenshotRequest.WaitTime.HasValue)
 				{
 					Task.Delay((int)screenshotRequest.WaitTime * 1000).Wait();
+				}
+				try
+				{
+					IRequest? request = await page.WaitForRequestAsync(
+						"/",
+						new WaitForOptions() { Timeout = 0 } 
+					);
+					IRequest[] chain = request.RedirectChain;
+					System.Console.WriteLine($"[DEBUG] - {chain != null} {chain?.Length}");
+				}
+				catch(Exception ex)
+				{
+					System.Console.WriteLine($"[ERROR] - {ex?.Message} {ex?.StackTrace}");
 				}
 
 				result = await page.ScreenshotDataAsync(new ScreenshotOptions()
@@ -68,6 +80,7 @@ public class ScreenshotService : IScreenshotService
 					FullPage = screenshotRequest.FullPage,
 					Type = ScreenshotType.Jpeg,
 					Quality = 100,
+					OptimizeForSpeed = true
 				});
 			}
 		}

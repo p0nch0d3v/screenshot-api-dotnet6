@@ -20,7 +20,7 @@ public static class Api
         app.MapMethods("/healtcheck", new[] { "OPTIONS", "HEAD" }, () => true);
     }
 
-    private static async Task<IResult> GetHome()
+    private static IResult GetHome()
     {
         try
         {
@@ -53,7 +53,7 @@ public static class Api
         }
     }
 
-    private static async Task<IResult> HealthCheck(string token)
+    private static IResult HealthCheck(string token)
     {
         if (isTokenValid(token))
         {
